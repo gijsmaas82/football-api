@@ -28,4 +28,16 @@ router.get('/team/:id', (req, res, next) => {
     .catch(err => next(err))
 })
 
+router.put('/team/:id', (req, res, next) => {
+  Team.findByPk(req.params.id)
+    .then(team => {
+      if (team) {
+        return team.update(req.body)
+          .then(team => res.json(team))
+      } else {
+        res.status(404).end()
+      }
+    })
+})
+
 module.exports = router
