@@ -16,4 +16,16 @@ router.post('/team', (req, res, next) => {
     .catch(err => next(err))
 })
 
+router.get('/team/:id', (req, res, next) => {
+  Team.findByPk(req.params.id)
+    .then(team => {
+      if (team) {
+        res.json(team)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(err => next(err))
+})
+
 module.exports = router
