@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const Team = require('../team/model')
 const City = require('./model')
+const Player = require('../player/model')
 
 const router = new Router()
 
@@ -38,6 +39,40 @@ router.put('/city/:id', (req, res, next) => {
         res.status(404).end()
       }
     })
+})
+
+router.get('/city-by-player/:name', (req, res, next) => {
+  City.findAll({
+    include: [{
+      model: Player,
+      where: { name: req.params.name }
+    }]
+  })
+    .then(city => {
+      if (city) {
+        res.json(city)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(err => next(err))
+})
+
+router.get('/city-by-team/:name', (req, res, next) => {
+  City.findAll({
+    include: [{
+      model: Team,
+      where: { name: req.params.name }
+    }]
+  })
+    .then(team => {
+      if (team) {
+        res.json(team)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(err => next(err))
 })
 
 module.exports = router

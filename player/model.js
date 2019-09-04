@@ -14,6 +14,8 @@ const Player = db.define('player', {
 })
 
 Player.belongsTo(Team)
+Team.hasMany(Player)
 Player.belongsTo(City)
+City.hasMany(Player)
 
 module.exports = Player

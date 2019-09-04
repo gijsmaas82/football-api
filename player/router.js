@@ -29,6 +29,40 @@ router.get('/player/:id', (req, res, next) => {
     .catch(err => next(err))
 })
 
+router.get('/players-by-team/:name', (req, res, next) => {
+  Player.findAll({
+    include: [{
+      model: Team,
+      where: { name: req.params.name }
+    }]
+  })
+    .then(players => {
+      if (players) {
+        res.json(players)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(err => next(err))
+}) 
+
+router.get('/players-by-city/:name', (req, res, next) => {
+  Player.findAll({
+    include: [{
+      model: City,
+      where: { name: req.params.name }
+    }]
+  })
+    .then(players => {
+      if (players) {
+        res.json(players)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(err => next(err))
+})
+
 router.put('/player/:id', (req, res, next) => {
   Player.findByPk(req.params.id)
     .then(player => {
